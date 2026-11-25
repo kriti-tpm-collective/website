@@ -15,13 +15,14 @@ export default async function ArticlesPage() {
   return (
     <div className="container-page py-14 md:py-20">
       <PageIntro
+        eyebrow="field notes, not thought leadership"
         title="Articles"
         description="Field notes from Kriti Thakur on technical program management — alignment, risk, delivery, and the craft of leading complex work."
       />
-      <div className="mt-12 divide-y divide-line md:mt-16">
-        {articles.map((article) => (
-          <div key={article._id} className="py-8 first:pt-0">
-            <ArticleCard article={article} large />
+      <div className="mt-12 divide-y-[1.5px] divide-dashed divide-ink/20 md:mt-16">
+        {articles.map((article, index) => (
+          <div key={article._id} className="py-10 first:pt-0">
+            <ArticleCard article={article} large number={articles.length - index} />
           </div>
         ))}
       </div>

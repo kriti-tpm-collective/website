@@ -31,20 +31,23 @@ export default async function EventPage({ params }: Props) {
     <article className="container-page max-w-3xl py-14 md:py-20">
       <Link
         href="/events"
-        className="text-sm font-medium text-ink-muted transition hover:text-accent"
+        className="group inline-flex items-center gap-1 text-sm font-semibold text-ink-muted transition hover:text-ink"
       >
-        ← Events
+        <span className="transition group-hover:-translate-x-1" aria-hidden="true">
+          ←
+        </span>
+        Events
       </Link>
 
       <header className="mt-8">
-        <p className="text-sm font-medium text-accent">
+        <p className="inline-block rounded-full bg-sticky-mint px-3 py-1 text-sm font-semibold text-ink capitalize">
           {event.locationType.replace("-", " ")}
         </p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-[-0.035em] text-brand md:text-5xl">
+        <h1 className="font-display mt-4 text-4xl leading-[1.05] font-bold tracking-[-0.045em] text-ink md:text-6xl">
           {event.title}
         </h1>
-        <p className="mt-5 text-lg text-ink-muted">{event.summary}</p>
-        <dl className="mt-8 grid gap-4 rounded-2xl border border-line bg-surface p-6 text-sm sm:grid-cols-2">
+        <p className="mt-5 text-xl leading-relaxed text-ink-muted">{event.summary}</p>
+        <dl className="paper-card mt-8 grid gap-4 p-6 text-sm sm:grid-cols-2">
           <div>
             <dt className="text-ink-faint">When</dt>
             <dd className="mt-1 font-medium text-ink">

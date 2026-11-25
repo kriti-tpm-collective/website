@@ -14,7 +14,11 @@ export default async function AboutPage() {
 
   return (
     <div className="container-page py-14 md:py-20">
-      <PageIntro title="Why TPM Collective exists" description={settings.mission} />
+      <PageIntro
+        eyebrow="the why behind the what"
+        title="Why TPM Collective exists"
+        description={settings.mission}
+      />
 
       <div className="mt-14 grid gap-12 md:grid-cols-[1.15fr_0.85fr] md:gap-16">
         <div className="space-y-5 text-base leading-relaxed text-ink-muted md:text-lg">
@@ -34,13 +38,13 @@ export default async function AboutPage() {
             performance. Community that grows from substance.
           </p>
 
-          <div className="border-t border-line pt-8">
-            <p className="text-xs font-medium tracking-[0.04em] text-ink-faint uppercase">
-              Founder
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
+          <div className="paper-card mt-10 p-7 md:p-9">
+            <span className="tape" aria-hidden="true" />
+            <p className="font-hand text-2xl text-ink-muted">the human behind it</p>
+            <h2 className="font-display mt-1 text-3xl font-bold tracking-[-0.035em] text-ink">
               Kriti Thakur
             </h2>
+            <p className="text-sm font-semibold text-ink">Founder</p>
             <p className="mt-4">
               Kriti is a Technical Program Manager and the founder of TPM Collective. She writes
               about the practice of leading complex technical programs — alignment across orgs,
@@ -54,28 +58,22 @@ export default async function AboutPage() {
           </div>
         </div>
 
-        <aside className="h-fit rounded-2xl border border-line bg-surface p-7 shadow-[var(--shadow-soft)] md:p-8">
-          <p className="text-xs font-medium tracking-[0.04em] text-ink-faint uppercase">
-            Pillars
-          </p>
-          <ul className="mt-6 space-y-6">
-            <li>
-              <p className="text-lg font-semibold tracking-[-0.02em] text-ink">Think</p>
-              <p className="mt-1 text-sm text-ink-muted">
-                Essays and field notes that sharpen judgment.
-              </p>
+        <aside className="h-fit md:sticky md:top-24">
+          <p className="font-hand text-[1.75rem] text-ink-muted">three pillars, zero buzzwords</p>
+          <ul className="mt-5 space-y-5">
+            <li className="-rotate-2 rounded-[4px] border border-ink/80 bg-sticky-yellow p-5 shadow-[3px_4px_0_rgba(11,22,48,0.85)] transition hover:rotate-0">
+              <p className="font-display text-2xl font-bold tracking-[-0.03em] text-ink">Think</p>
+              <p className="mt-1 text-ink/75">Essays and field notes that sharpen judgment.</p>
             </li>
-            <li>
-              <p className="text-lg font-semibold tracking-[-0.02em] text-ink">Connect</p>
-              <p className="mt-1 text-sm text-ink-muted">
+            <li className="rotate-1 rounded-[4px] border border-ink/80 bg-sticky-mint p-5 shadow-[3px_4px_0_rgba(11,22,48,0.85)] transition hover:rotate-0">
+              <p className="font-display text-2xl font-bold tracking-[-0.03em] text-ink">Connect</p>
+              <p className="mt-1 text-ink/75">
                 Events and conversations among people who do the work.
               </p>
             </li>
-            <li>
-              <p className="text-lg font-semibold tracking-[-0.02em] text-ink">Lead</p>
-              <p className="mt-1 text-sm text-ink-muted">
-                Resources and frameworks for programs that matter.
-              </p>
+            <li className="-rotate-1 rounded-[4px] border border-ink/80 bg-sticky-blue p-5 shadow-[3px_4px_0_rgba(11,22,48,0.85)] transition hover:rotate-0">
+              <p className="font-display text-2xl font-bold tracking-[-0.03em] text-ink">Lead</p>
+              <p className="mt-1 text-ink/75">Resources and frameworks for programs that matter.</p>
             </li>
           </ul>
           <Link href="/articles" className="btn-primary mt-8 w-full">

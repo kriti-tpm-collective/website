@@ -2,13 +2,55 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { EventCard } from "@/components/EventCard";
+import { EventsEmptyState } from "@/components/EventsEmptyState";
+import { HonorsMarquee } from "@/components/HonorsMarquee";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import { RotatingWord } from "@/components/RotatingWord";
+import { Scribble } from "@/components/Scribble";
+import { StickyBoard } from "@/components/StickyBoard";
+import { WatermelonTest } from "@/components/WatermelonTest";
 import {
   getArticles,
   getEvents,
   getResources,
   getSiteSettings,
 } from "@/lib/content";
+
+const resourceTilts = ["md:-rotate-1", "md:rotate-1", "md:rotate-[0.5deg]", "md:-rotate-[0.5deg]"];
+
+function SectionHeading({
+  kicker,
+  title,
+  href,
+  linkLabel,
+}: {
+  kicker: string;
+  title: string;
+  href?: string;
+  linkLabel?: string;
+}) {
+  return (
+    <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p className="font-hand text-2xl text-ink-muted">{kicker}</p>
+        <h2 className="font-display text-4xl font-bold tracking-[-0.04em] text-ink md:text-5xl">
+          {title}
+        </h2>
+      </div>
+      {href && linkLabel ? (
+        <Link
+          href={href}
+          className="group inline-flex items-center gap-1 text-sm font-semibold text-ink underline decoration-signal-amber decoration-2 underline-offset-4"
+        >
+          {linkLabel}
+          <span className="transition group-hover:translate-x-1" aria-hidden="true">
+            →
+          </span>
+        </Link>
+      ) : null}
+    </div>
+  );
+}
 
 export default async function HomePage() {
   const [settings, articles, events, resources] = await Promise.all([
@@ -18,6 +60,7 @@ export default async function HomePage() {
     getResources(),
   ]);
 
+  const issueNumber = (id: string) => articles.length - articles.findIndex((a) => a._id === id);
   const [lead, ...restFeatured] = articles.filter((article) => article.featured);
   const secondary = restFeatured[0];
   const latest = articles.filter((a) => a._id !== lead?._id && a._id !== secondary?._id).slice(0, 4);
@@ -26,148 +69,153 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-line bg-surface">
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_100%_-10%,rgba(26,95,255,0.06),transparent_50%)]"
-          aria-hidden="true"
-        />
-        <div className="container-page relative py-20 md:py-28 lg:py-32">
-          <div className="max-w-3xl">
-            <div className="animate-fade-up mb-8 flex items-center gap-3">
+      <section className="relative overflow-hidden">
+        <div className="container-page grid gap-14 py-16 md:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-12 lg:py-24">
+          <div>
+            <div className="animate-fade-up flex flex-wrap items-center gap-3">
               <Image
                 src="/brand/tpm-collective-logo.png"
                 alt=""
-                width={44}
-                height={44}
+                width={40}
+                height={40}
                 priority
-                className="h-11 w-11 rounded-lg object-cover"
+                className="h-10 w-10 rounded-lg border-[1.5px] border-ink object-cover"
               />
-              <p className="text-sm font-medium text-ink-muted">{settings.tagline}</p>
+              <p className="font-display text-base font-bold tracking-[-0.02em] text-ink">
+                TPM Collective
+              </p>
+              <span className="rounded-full border-[1.5px] border-ink bg-surface px-3 py-1 text-xs font-semibold text-ink">
+                {settings.tagline}
+              </span>
             </div>
-            <h1 className="animate-fade-up-delay text-5xl font-semibold tracking-[-0.045em] text-brand md:text-6xl lg:text-[4.5rem] lg:leading-[1.05]">
-              TPM Collective
+
+            <h1 className="font-display animate-fade-up-delay mt-8 text-[3.25rem] leading-[0.95] font-extrabold tracking-[-0.055em] text-ink sm:text-7xl lg:text-[4.4rem] xl:text-[5.4rem]">
+              Make hard things
+              <br />
+              <em className="font-serif font-normal tracking-[-0.035em] italic">
+                <Scribble>
+                  <RotatingWord words={["move.", "ship.", "land.", "make sense."]} />
+                </Scribble>
+              </em>
             </h1>
-            <p className="animate-fade-up-delay-2 mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted md:text-xl">
+
+            <p className="animate-fade-up-delay-2 mt-8 max-w-xl text-lg leading-relaxed text-ink-muted md:text-xl">
               {settings.mission}
             </p>
+
             <div className="animate-fade-up-delay-2 mt-9 flex flex-wrap gap-3">
               <Link href="/articles" className="btn-primary">
-                Read the latest
+                Read the field notes
               </Link>
               <Link href="/#newsletter" className="btn-secondary">
                 Subscribe
               </Link>
             </div>
+
+            <p className="animate-fade-up-delay-2 mt-8 text-sm text-ink-faint">
+              Written by a working TPM.{" "}
+              <span className="font-semibold text-ink-muted">Not a content calendar.</span>
+            </p>
+          </div>
+
+          <div className="animate-fade-up-delay">
+            <StickyBoard />
           </div>
         </div>
       </section>
 
-      {lead ? (
-        <section className="container-page py-16 md:py-20">
-          <div className="mb-10 flex items-end justify-between gap-4">
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-brand md:text-3xl">
-              Featured
-            </h2>
-            <Link
-              href="/articles"
-              className="text-sm font-medium text-ink-muted transition hover:text-accent"
-            >
-              All articles
-            </Link>
-          </div>
+      <HonorsMarquee />
 
-          <div className={`grid gap-12 ${secondary ? "lg:grid-cols-[1.35fr_1fr] lg:gap-16" : ""}`}>
-            <ArticleCard article={lead} large />
+      {lead ? (
+        <section className="container-page py-20 md:py-24">
+          <SectionHeading
+            kicker="start here →"
+            title="Fresh from the field"
+            href="/articles"
+            linkLabel="All articles"
+          />
+
+          <div className={`grid gap-8 ${secondary ? "lg:grid-cols-[1.35fr_1fr] lg:gap-10" : ""}`}>
+            <div className="paper-card p-7 md:p-10">
+              <span className="tape" aria-hidden="true" />
+              <ArticleCard article={lead} large number={issueNumber(lead._id)} />
+            </div>
             {secondary ? (
-              <div className="border-t border-line pt-10 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-16">
-                <ArticleCard article={secondary} />
+              <div className="paper-card bg-sticky-blue/40 p-7 md:p-8 lg:mt-10 lg:rotate-1">
+                <ArticleCard article={secondary} number={issueNumber(secondary._id)} />
               </div>
             ) : null}
           </div>
         </section>
       ) : null}
 
-      {nextEvent ? (
-        <section className="border-y border-line bg-surface">
-          <div className="container-page grid gap-10 py-16 md:grid-cols-[0.9fr_1.1fr] md:gap-14 md:py-20">
-            <div>
-              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-brand md:text-3xl">
-                Upcoming event
-              </h2>
-              <p className="mt-3 max-w-md text-ink-muted">
-                Conversations for people who run complex technical programs.
-              </p>
-              <Link
-                href="/events"
-                className="mt-5 inline-block text-sm font-medium text-accent hover:text-accent-hover"
-              >
-                View all events
-              </Link>
-            </div>
-            <EventCard event={nextEvent} />
-          </div>
-        </section>
-      ) : null}
+      <WatermelonTest />
+
+      <section className="container-page py-20 md:py-24">
+        <SectionHeading
+          kicker="small rooms, sharp questions"
+          title={nextEvent ? "Upcoming gathering" : "Gatherings"}
+          href="/events"
+          linkLabel="View all events"
+        />
+        {nextEvent ? <EventCard event={nextEvent} /> : <EventsEmptyState />}
+      </section>
 
       {featuredResources.length > 0 ? (
-        <section className="container-page py-16 md:py-20">
-          <div className="mb-10 flex items-end justify-between gap-4">
-            <h2 className="text-2xl font-semibold tracking-[-0.03em] text-brand md:text-3xl">
-              Resources
-            </h2>
-            <Link
+        <section className="border-y-[1.5px] border-ink bg-bg-deep">
+          <div className="container-page py-20 md:py-24">
+            <SectionHeading
+              kicker="steal these. really."
+              title="The toolkit"
               href="/resources"
-              className="text-sm font-medium text-ink-muted transition hover:text-accent"
-            >
-              Browse all
-            </Link>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {featuredResources.map((resource) => (
-              <Link
-                key={resource._id}
-                href={`/resources/${resource.slug}`}
-                className="rounded-2xl border border-line bg-surface p-6 transition hover:border-line-strong hover:shadow-[var(--shadow-soft)]"
-              >
-                <p className="text-xs font-medium tracking-[0.04em] text-accent uppercase">
-                  {resource.category}
-                </p>
-                <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em] text-ink">
-                  {resource.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{resource.summary}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      {latest.length > 0 ? (
-        <section className="border-t border-line bg-surface">
-          <div className="container-page py-16 md:py-20">
-            <div className="mb-10 flex items-end justify-between gap-4">
-              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-brand md:text-3xl">
-                Latest writing
-              </h2>
-              <Link
-                href="/articles"
-                className="text-sm font-medium text-ink-muted transition hover:text-accent"
-              >
-                More
-              </Link>
-            </div>
-            <div className="divide-y divide-line">
-              {latest.map((article) => (
-                <div key={article._id} className="py-8 first:pt-0 last:pb-0">
-                  <ArticleCard article={article} />
-                </div>
+              linkLabel="Browse all"
+            />
+            <div className="grid gap-6 md:grid-cols-2">
+              {featuredResources.map((resource, index) => (
+                <Link
+                  key={resource._id}
+                  href={`/resources/${resource.slug}`}
+                  className={`paper-card group block p-7 ${resourceTilts[index % resourceTilts.length]}`}
+                >
+                  <span className="inline-block rounded-md bg-sticky-yellow px-2 py-0.5 text-xs font-bold tracking-[0.08em] text-ink uppercase">
+                    {resource.category}
+                  </span>
+                  <h3 className="font-display mt-4 text-2xl font-bold tracking-[-0.03em] text-ink">
+                    {resource.title}
+                  </h3>
+                  <p className="mt-2 leading-relaxed text-ink-muted">{resource.summary}</p>
+                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-ink">
+                    Open it
+                    <span className="transition group-hover:translate-x-1" aria-hidden="true">
+                      →
+                    </span>
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
         </section>
       ) : null}
 
-      <section className="container-page py-16 md:py-24">
+      {latest.length > 0 ? (
+        <section className="container-page py-20 md:py-24">
+          <SectionHeading
+            kicker="more from the notebook"
+            title="Latest writing"
+            href="/articles"
+            linkLabel="More"
+          />
+          <div className="divide-y-[1.5px] divide-dashed divide-ink/20">
+            {latest.map((article) => (
+              <div key={article._id} className="py-8 first:pt-0 last:pb-0">
+                <ArticleCard article={article} number={issueNumber(article._id)} />
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="container-page pb-20 md:pb-28">
         <NewsletterForm blurb={settings.newsletterBlurb} />
       </section>
     </div>

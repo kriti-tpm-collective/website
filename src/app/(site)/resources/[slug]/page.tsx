@@ -30,18 +30,23 @@ export default async function ResourcePage({ params }: Props) {
     <article className="container-page max-w-3xl py-14 md:py-20">
       <Link
         href="/resources"
-        className="text-sm font-medium text-ink-muted transition hover:text-accent"
+        className="group inline-flex items-center gap-1 text-sm font-semibold text-ink-muted transition hover:text-ink"
       >
-        ← Resources
+        <span className="transition group-hover:-translate-x-1" aria-hidden="true">
+          ←
+        </span>
+        Resources
       </Link>
 
       <header className="mt-8">
-        <p className="text-sm font-medium text-accent">{resource.category}</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-[-0.035em] text-brand md:text-5xl md:leading-[1.12]">
+        <p className="inline-block rounded-md bg-sticky-yellow px-2 py-0.5 text-xs font-bold tracking-[0.08em] text-ink uppercase">
+          {resource.category}
+        </p>
+        <h1 className="font-display mt-4 text-4xl leading-[1.05] font-bold tracking-[-0.045em] text-ink md:text-6xl">
           {resource.title}
         </h1>
-        <p className="mt-5 text-lg leading-relaxed text-ink-muted">{resource.summary}</p>
-        <div className="mt-8 h-px bg-line" />
+        <p className="mt-6 text-xl leading-relaxed text-ink-muted">{resource.summary}</p>
+        <div className="mt-9 border-t-[1.5px] border-dashed border-ink/25" />
       </header>
 
       <div className="mt-10">

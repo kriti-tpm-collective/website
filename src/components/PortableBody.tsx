@@ -48,7 +48,7 @@ export function PortableBody({ value }: { value: PortableBlock[] }) {
       elements.push(
         <h2
           key={block._key}
-          className="mt-12 mb-4 font-sans text-2xl font-semibold tracking-[-0.03em] text-ink"
+          className="font-display mt-12 mb-4 text-3xl font-bold tracking-[-0.035em] text-ink"
         >
           {renderText(block)}
         </h2>,
@@ -59,7 +59,7 @@ export function PortableBody({ value }: { value: PortableBlock[] }) {
       elements.push(
         <h3
           key={block._key}
-          className="mt-10 mb-3 font-sans text-xl font-semibold tracking-[-0.02em] text-ink"
+          className="font-display mt-10 mb-3 text-2xl font-bold tracking-[-0.025em] text-ink"
         >
           {renderText(block)}
         </h3>,
@@ -70,7 +70,7 @@ export function PortableBody({ value }: { value: PortableBlock[] }) {
       elements.push(
         <blockquote
           key={block._key}
-          className="my-8 border-l-[3px] border-accent pl-5 text-[1.15rem] leading-relaxed text-ink italic"
+          className="my-10 -rotate-[0.5deg] rounded-r-xl border-l-[5px] border-signal-amber bg-sticky-yellow/45 py-4 pr-5 pl-6 text-[1.3rem] leading-relaxed text-ink italic"
         >
           {renderText(block)}
         </blockquote>,

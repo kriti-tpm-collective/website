@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { EventCard } from "@/components/EventCard";
@@ -9,6 +8,8 @@ import { RotatingWord } from "@/components/RotatingWord";
 import { Scribble } from "@/components/Scribble";
 import { StickyBoard } from "@/components/StickyBoard";
 import { WatermelonTest } from "@/components/WatermelonTest";
+import { StoryCard } from "@/components/StoryCard";
+import { listPublishedStories } from "@/lib/community-store";
 import {
   getArticles,
   getEvents,
@@ -53,11 +54,12 @@ function SectionHeading({
 }
 
 export default async function HomePage() {
-  const [settings, articles, events, resources] = await Promise.all([
+  const [settings, articles, events, resources, stories] = await Promise.all([
     getSiteSettings(),
     getArticles(),
     getEvents(),
     getResources(),
+    listPublishedStories(),
   ]);
 
   const issueNumber = (id: string) => articles.length - articles.findIndex((a) => a._id === id);
@@ -72,24 +74,7 @@ export default async function HomePage() {
       <section className="relative overflow-hidden">
         <div className="container-page grid gap-14 py-16 md:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-12 lg:py-24">
           <div>
-            <div className="animate-fade-up flex flex-wrap items-center gap-3">
-              <Image
-                src="/brand/tpm-collective-logo.png"
-                alt=""
-                width={40}
-                height={40}
-                priority
-                className="h-10 w-10 rounded-lg border-[1.5px] border-ink object-cover"
-              />
-              <p className="font-display text-base font-bold tracking-[-0.02em] text-ink">
-                TPM Collective
-              </p>
-              <span className="rounded-full border-[1.5px] border-ink bg-surface px-3 py-1 text-xs font-semibold text-ink">
-                {settings.tagline}
-              </span>
-            </div>
-
-            <h1 className="font-display animate-fade-up-delay mt-8 text-[3.25rem] leading-[0.95] font-extrabold tracking-[-0.055em] text-ink sm:text-7xl lg:text-[4.4rem] xl:text-[5.4rem]">
+            <h1 className="font-display animate-fade-up text-[3.25rem] leading-[0.95] font-extrabold tracking-[-0.055em] text-ink sm:text-7xl lg:text-[4.4rem] xl:text-[5.4rem]">
               Make hard things
               <br />
               <em className="font-serif font-normal tracking-[-0.035em] italic">
@@ -197,6 +182,57 @@ export default async function HomePage() {
         </section>
       ) : null}
 
+      <section className="container-page py-20 md:py-24">
+        <SectionHeading
+          kicker="before the panel"
+          title="Prepare for the interview"
+          href="/prepare"
+          linkLabel="Open the playbook"
+        />
+        <Link
+          href="/prepare"
+          className="paper-card group grid gap-6 p-7 no-underline md:grid-cols-[1.2fr_0.8fr] md:items-center md:p-9"
+        >
+          <div>
+            <p className="inline-block rounded-md bg-sticky-pink px-2 py-0.5 text-xs font-bold tracking-[0.08em] text-ink uppercase">
+              6 pillars · 27 skills
+            </p>
+            <h3 className="font-display mt-4 text-3xl font-bold tracking-[-0.035em] text-ink md:text-4xl">
+              Theory and tools for the questions after your STAR story
+            </h3>
+            <p className="mt-3 max-w-xl text-lg leading-relaxed text-ink-muted">
+              Principles, frameworks, metrics, and 60-second answers — organized the way Sr. TPM
+              interviews actually probe.
+            </p>
+            <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-ink">
+              Start preparing
+              <span className="transition group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            {["A", "B", "C", "D", "E", "F"].map((letter, index) => (
+              <span
+                key={letter}
+                className={`font-display flex aspect-square items-center justify-center rounded-2xl border-[1.5px] border-ink text-xl font-extrabold ${
+                  [
+                    "bg-sticky-blue",
+                    "bg-sticky-mint",
+                    "bg-sticky-yellow",
+                    "bg-sticky-pink",
+                    "bg-accent-soft",
+                    "bg-bg-deep",
+                  ][index]
+                }`}
+              >
+                {letter}
+              </span>
+            ))}
+          </div>
+        </Link>
+      </section>
+
       {latest.length > 0 ? (
         <section className="container-page py-20 md:py-24">
           <SectionHeading
@@ -214,6 +250,33 @@ export default async function HomePage() {
           </div>
         </section>
       ) : null}
+
+      <section className="container-page py-20 md:py-24">
+        <SectionHeading
+          kicker="anyone with an account"
+          title="Blogs"
+          href="/blogs"
+          linkLabel="All blogs"
+        />
+        {stories.length === 0 ? (
+          <div className="rounded-[18px] border-[1.5px] border-dashed border-ink/30 bg-surface px-6 py-8 md:px-8">
+            <p className="max-w-xl text-lg leading-relaxed text-ink-muted">
+              Member stories, written in a quiet editor and published when they are ready.
+            </p>
+            <Link href="/write" className="btn-primary mt-5">
+              Write a story
+            </Link>
+          </div>
+        ) : (
+          <div className="divide-y-[1.5px] divide-dashed divide-ink/20">
+            {stories.slice(0, 3).map((story) => (
+              <div key={story.id} className="py-8 first:pt-0 last:pb-0">
+                <StoryCard story={story} />
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       <section className="container-page pb-20 md:pb-28">
         <NewsletterForm blurb={settings.newsletterBlurb} />

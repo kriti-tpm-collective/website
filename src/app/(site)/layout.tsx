@@ -1,13 +1,13 @@
-import { Suspense } from "react";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { getCurrentUser } from "@/lib/auth";
 
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const user = await getCurrentUser();
+
   return (
     <>
-      <Suspense fallback={<div className="h-16 border-b-[1.5px] border-ink/90 bg-bg" />}>
-        <SiteHeader />
-      </Suspense>
+      <SiteHeader user={user ? { id: user.id, name: user.name } : null} />
       <div className="flex-1">{children}</div>
       <SiteFooter />
     </>

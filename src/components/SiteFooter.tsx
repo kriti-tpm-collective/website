@@ -27,6 +27,12 @@ export function SiteFooter() {
             <Link href="/articles" className="w-fit text-ink-muted transition hover:text-ink hover:underline">
               Articles
             </Link>
+            <Link href="/blogs" className="w-fit text-ink-muted transition hover:text-ink hover:underline">
+              Blogs
+            </Link>
+            <Link href="/prepare" className="w-fit text-ink-muted transition hover:text-ink hover:underline">
+              Prepare
+            </Link>
             <Link href="/events" className="w-fit text-ink-muted transition hover:text-ink hover:underline">
               Events
             </Link>

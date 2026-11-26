@@ -50,6 +50,10 @@ export const metadata: Metadata = {
     title: "TPM Collective",
     description: "A professional destination for Technical Program Managers.",
   },
+  icons: {
+    icon: "/brand/tpm-collective-logo.png",
+    apple: "/brand/tpm-collective-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

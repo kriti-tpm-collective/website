@@ -36,6 +36,12 @@ Content schemas are already defined for Articles, Events, Resources, Authors, To
 
 > Until Sanity is connected, the public site reads from local seed content in `src/content/seed.ts`.
 
+## Member blogs
+
+Anyone can create an account at `/signup`, then write at `/write` and publish to `/blogs`.
+
+Accounts, drafts, and published stories are stored in `data/community.json` on the machine running the app. That file is created on first signup and is gitignored. Set `AUTH_SECRET` in production so login sessions stay valid across restarts. On serverless hosts the local file does not persist between invocations.
+
 ## Newsletter
 
 Set `BUTTONDOWN_API_KEY` in `.env.local` to send subscribers to [Buttondown](https://buttondown.com). Without it, signups are validated and logged (useful for local development).
